@@ -11,6 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedFiles = [];
 
+    // 本地记忆 OpenRouter API 密钥
+    const API_KEY_STORAGE = 'openrouter_api_key';
+    try {
+        const savedKey = localStorage.getItem(API_KEY_STORAGE);
+        if (savedKey) {
+            apiKeyInput.value = savedKey;
+        }
+    } catch (_) {
+        // 如果浏览器禁用了本地存储，静默忽略
+    }
+
+    apiKeyInput.addEventListener('input', () => {
+        try {
+            localStorage.setItem(API_KEY_STORAGE, apiKeyInput.value);
+        } catch (_) {
+            // 忽略本地存储异常
+        }
+    });
+
     // 拖放功能
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         uploadArea.addEventListener(eventName, preventDefaults, false);
